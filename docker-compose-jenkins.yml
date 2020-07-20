@@ -1,0 +1,20 @@
+version: '3'
+services:
+  myjenkins:
+    environment:
+      - "JAVA_OPTS=-Xmx1024m"
+      - "JENKINS_OPTS=--logfile=/var/log/jenkins/jenkins.log --webroot=/var/cache/jenkins/war --httpPort=9090"
+    build: 
+      context: .
+      dockerfile: myjenkins-dockerfile
+    container_name: my-jenkins
+    ports:
+      - 9090:9090
+      - 50000:50000
+    volumes:
+      - jenkins-log:/var/log/jenkins
+      - jenkins-data:/var/jenkins_home
+
+volumes:
+  jenkins-log:
+  jenkins-data:
