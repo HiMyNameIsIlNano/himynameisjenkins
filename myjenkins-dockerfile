@@ -1,12 +1,16 @@
 FROM jenkins/jenkins:2.235.2-lts-centos7
 
 USER root
+RUN yum install -y yum-utils
+RUN yum-config-manager \
+    --add-repo \
+    https://download.docker.com/linux/centos/docker-ce.repo
+RUN yum install -y docker-ce-19.03.8
+RUN usermod -aG docker jenkins
+
 RUN mkdir /var/log/jenkins
 RUN chown -R jenkins:jenkins /var/log/jenkins
 
 RUN mkdir /var/cache/jenkins
 # Jenkins Docker image stores the uncompressed Jenkins war file in jenkins_home. To avoid this we need to define the webroot
 RUN chown -R jenkins:jenkins /var/cache/jenkins
-
-USER jenkins
-
